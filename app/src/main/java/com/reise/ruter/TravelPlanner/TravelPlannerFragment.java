@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -83,11 +84,28 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
        	groupArrOrDep = (RadioGroup) view.findViewById(R.id.radiogroup_arrive_departure);
        	
        	// Setup dates
+        // TODO make changelistener
        	String[] dateList = makeDateList();
        	spinnerDate = (Spinner) view.findViewById(R.id.spinner_date);
        	ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, dateList);
        	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
        	spinnerDate.setAdapter(adapter);
+
+        spinnerDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (position == 0)
+                    buttonSetTime.setEnabled(false);
+                else
+                    buttonSetTime.setEnabled(true);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
        	
        	// Setup time
        	buttonSetTime = (Button) view.findViewById(R.id.button_time);
@@ -108,7 +126,8 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
 				
 			    timePickerFragment.show(getActivity().getSupportFragmentManager(), "timePicker");
 			}
-       	});
+            	});
+        buttonSetTime.setEnabled(false);
        	
        	//TODO implement finish button
        	buttonFinish = (Button) view.findViewById(R.id.button_search_trip);
@@ -117,7 +136,7 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
 			public void onClick(View v) {
 				
 			}
-       	});
+        });
        	
        	//advance settings button
        	viewAdvanceSettings = (View) view.findViewById(R.id.layout_advance_settings);
@@ -198,15 +217,18 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     	
     	int nWeekdays = Variables.NUMBUER_OF_WEEKDAYS;
-    	String[] dates = new String[Variables.NUMBUER_OF_WEEKDAYS];
+    	String[] dates = new String[Variables.NUMBUER_OF_WEEKDAYS  + 1];
     	
-    	for(int i = 0; i < nWeekdays; i++){
-    		if(i == 0)
+    	for(int i = 0; i < nWeekdays+1; i++){
+    		if(i==0)
+                //TODO HARDCODE
+                dates[0] = "now";
+            else if(i == 1)
     			dates[i] = getResources().getString(R.string.Today);
-    		else if(i == 1)
+    		else if(i == 2)
     			dates[i] = getResources().getString(R.string.Tomorrow);
     		else{
-	    		dates[i] = week_day[dummyTime.get(Calendar.DAY_OF_WEEK)%7 ] + " - " + sdf.format(dummyTime.getTime());
+	    		dates[i] = week_day[dummyTime.get(Calendar.DAY_OF_WEEK)-1] + " - " + sdf.format(dummyTime.getTime());
 	    		dummyTime.add(Calendar.DAY_OF_MONTH, 1);
 	    	}
     	}

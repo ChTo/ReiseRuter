@@ -58,13 +58,13 @@
 
     <!-- week day label list -->
     <string-array name="week_days">
+        <item>Sun.</item>
         <item>Mon.</item>
         <item>Tue.</item>
         <item>Wed.</item>
         <item>Thu.</item>
         <item>Fri.</item>
         <item>Sat.</item>
-        <item>Sun.</item>
     </string-array>
 
     <!-- transport label list -->

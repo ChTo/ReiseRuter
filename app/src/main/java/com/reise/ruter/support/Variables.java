@@ -40,7 +40,8 @@ public class Variables {
 		public static String LINE_COLOUR = "LineColour";
 		public static String EXTENSIONS = "Extensions";
 		public static String PUBLISHED_LINE_NAME = "PublishedLineName";
-		
 	}
+
+
 	
 }
