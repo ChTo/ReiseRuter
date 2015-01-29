@@ -9,7 +9,11 @@ public class Variables {
 	public static String NEARBY_SEARCH = "Nearby";
     public static String FAVORIT_SEARCH = "Favorits";
 	
-	public static int NUMBUER_OF_WEEKDAYS = 7; 
+	public static int NUMBUER_OF_WEEKDAYS = 7;
+
+    public static String TransportTypeList[] = {
+            "Walking", "AirprtBus", "Bus", "Dummy", "AirportTrain", "Boat", "Train", "Tram", "Metro"
+    };
 
 	public static class PlaceType{
 		public static String AREA = "Area";
@@ -25,7 +29,6 @@ public class Variables {
 		public static String PLACE_TYPE = "PlaceType";
 		public static String STOPS = "Stops";
 		public static String REAL_TIME_STOP = "RealTimeStop";
-		
 	}
 	
 	public static class DeparturesField{
@@ -42,6 +45,7 @@ public class Variables {
 		public static String PUBLISHED_LINE_NAME = "PublishedLineName";
 	}
 
-
-	
+    public static enum TransportationType{
+        WALKING, AIRPORTBUS, BUS, DUMMY, AIRPORTTRAIN, BOAT, TRAIN, TRAM, METRO
+    }
 }
