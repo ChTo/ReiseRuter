@@ -6,11 +6,13 @@ import java.util.Calendar;
 
 import com.reise.ruter.R;
 import com.reise.ruter.data.Place;
+import com.reise.ruter.data.TravelSearchObject;
 import com.reise.ruter.support.AnimationSupport;
 import com.reise.ruter.support.TimeHolder;
 import com.reise.ruter.support.Variables;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,6 +32,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 /*
  * TravelPlannerFragment, fragment to search for a trip
@@ -53,6 +56,8 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
 	EditText editStart;
 	EditText editDestination;
 	Button buttonFinish;
+
+    TravelSearchObject tsObj;
 	
 	Place startPlace;
 	Place destPlace;
@@ -69,6 +74,10 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
             Bundle savedInstanceState) {
     	
         View view = inflater.inflate(R.layout.fragment_travel_planner, container, false);
+
+        tsObj = new TravelSearchObject();
+        tsObj.setToDefault();
+
         
         // Setup chooser for start and destination
         editStart = (EditText) view.findViewById(R.id.edit_choose_start);
@@ -81,6 +90,19 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
        	
        	// Arrive and departure radiogroup
        	groupArrOrDep = (RadioGroup) view.findViewById(R.id.radiogroup_arrive_departure);
+        groupArrOrDep.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                tsObj.changeIsafter();
+                Context context = getActivity().getApplicationContext();
+                CharSequence text = "Hello toast!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
        	
        	// Setup dates
        	String[] dateList = makeDateList();
@@ -115,7 +137,8 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
        	buttonFinish.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				
+                Intent i = new Intent(getActivity(), TripListActivity.class);
+                startActivity(i);
 			}
        	});
        	
@@ -149,7 +172,7 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
             checkBox.setText(transportLabels[i]);
             transportFilter.addView(checkBox);
        	}
-       	
+
        	return view;
     }
     
@@ -228,12 +251,16 @@ public class TravelPlannerFragment extends Fragment implements TimePickerFragmen
 			place = b.getParcelable(TravelPlannerPlaceChooserActivity.KEY_STRING);
 			destPlace = place;
 			editDestination.setText(place.getName());
+
+            tsObj.setToplace(Integer.toString(place.getId()));
         }
 		else if(requestCode == PICK_DEST_REQUEST && resultCode == Activity.RESULT_OK){
 			b = data.getExtras();
 			place = b.getParcelable(TravelPlannerPlaceChooserActivity.KEY_STRING);
 			startPlace = place;
 			editStart.setText(place.getName());
+
+            tsObj.setToplace(Integer.toString(place.getId()));
 		}
 		
 	}

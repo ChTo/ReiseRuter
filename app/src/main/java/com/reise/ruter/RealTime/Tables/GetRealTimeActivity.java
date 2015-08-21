@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +46,7 @@ import android.widget.Toast;
 public class GetRealTimeActivity extends ActionBarActivity {
 	private Place place;
 	private Activity thisActivity = this;
+    ActionBar actionBar;
 	
 	private ViewGroup viewMain;
 	private RelativeLayout layoutProgressBar;
@@ -63,7 +65,11 @@ public class GetRealTimeActivity extends ActionBarActivity {
 	    // Inflate the menu items for use in the action bar
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.actionbar_get_realtime, menu);
+
+
+
 	    return super.onCreateOptionsMenu(menu);
+
 	}
 	
 	@Override
@@ -98,8 +104,12 @@ public class GetRealTimeActivity extends ActionBarActivity {
 		Intent intent = getIntent();
 		
 		place = intent.getParcelableExtra(RealTimeFragment.KEY_STRING);
-		
-		setContentView(R.layout.activity_get_real_time_table);
+
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(place.getName());
+        actionBar.setSubtitle(place.getDistrict());
+
+        setContentView(R.layout.activity_get_real_time_table);
 		viewMain = (ViewGroup) findViewById(R.id.layout_platform_list);
 		
 		//No connection layout
